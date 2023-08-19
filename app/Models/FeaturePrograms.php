@@ -26,7 +26,7 @@ class FeaturePrograms extends Model
         return $this->belongsTo(Professions::class, 'profession_id', 'id');
     }
 
-    // public function tagprograms() {
-    //     return $this->hasMany(Tagprograms::class, 'program_id', 'id');
-    // }
+    public function tagprograms() {
+        return $this->hasMany(Tagprograms::class, 'program_id', 'id');
+    }
 }

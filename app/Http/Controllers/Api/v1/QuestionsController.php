@@ -46,7 +46,7 @@ class QuestionsController extends Controller
     }
 
 
-    /**
+/**
 * @OA\Post(
 *   path="/api/v1/questions",
 *   tags={"Questions"},
@@ -150,22 +150,45 @@ public function show($id)
    
     public function update(Request $request, string $id)
     {
-        //
+        
     }
 
-
+/**
+* @OA\Delete(
+*   path="/api/v1/questions/{id}",
+*   summary="Delete question by id",
+*   description="Delete question by id",
+*   tags={"Questions"},
+*   @OA\Parameter(
+*         name="id",
+*         in="path",
+*         required=true,
+*         description="Id of the question",
+*         @OA\Schema(
+*             type="integer"
+*         )
+*   ),
+*   @OA\Response(
+*       response = 200,
+*       description = "Delete Successfully!!",
+*       @OA\JsonContent()
+*    ),
+*   @OA\Response(
+*       response = 404,
+*       description = "Data not found!!",
+*       @OA\JsonContent()
+*    ),
+*)
+*/
 public function destroy($id)
 {
     $questions = Questions::find($id);
 
     if($questions) {
         $questions->delete();
-        return response()->json([
-            'status_code' => '200',
-            'message' => 'Delete successfully!!'
-        ], Response::HTTP_OK);
+        return $this->sentSuccessResponse("", 'Deleted successfully!!', 200);
     } else {
-       return $this->sentFailureResponse(404, 'Data not found!!');
+        return $this->sentFailureResponse(404, 'Data not found!!');
     }
 }
 }

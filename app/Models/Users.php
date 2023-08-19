@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\City;
 use App\Models\Professions;
 use App\Models\Evaluates;
+use App\Models\Bookings;
 
 class Users extends Model
 {
@@ -38,5 +39,9 @@ class Users extends Model
 
     public function evaluates() {
         return $this->hasMany(Evaluates::class, 'user_id', 'id');
+    }
+
+    public function bookings() {
+        return $this->hasMany(Bookings::class, 'user_id', 'id');
     }
 }

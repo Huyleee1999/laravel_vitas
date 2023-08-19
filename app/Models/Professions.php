@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Users;
 use App\Models\ExpertRegister;
 use App\Models\Questions;
+use App\Models\Expert;
 
 class Professions extends Model
 {
@@ -36,5 +37,9 @@ class Professions extends Model
 
     public function questions() {
         return $this-> hasMany(Questions::class, 'profession_id', 'id');
+    }
+
+    public function experts() {
+        return $this-> hasMany(Expert::class, 'profession_id', 'id');
     }
 }

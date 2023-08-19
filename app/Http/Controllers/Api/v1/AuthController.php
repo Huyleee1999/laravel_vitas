@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1;;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -64,6 +64,41 @@ class AuthController extends Controller
 *)
 */
     public function register(Request $request) {
+        if($request->type == 1) {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required',
+                'username' => 'required| string',
+                'phone' => 'required| numeric | digits:10',
+                'profession_id' =>  'required',
+                'city_id' =>  'required',
+                'email' =>  'required | email | unique:users',
+                'password' =>  'required | min:8',
+            ]);
+            if($validator->fails()) {
+                return response()->json([
+                    'status_code' => 422,
+                    'errors' => $validator->messages()
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            } else {
+                $user = User::create([
+                    'name' => $request->name,
+                    'username' => $request->username,
+                    'phone' => $request->phone,
+                    'email' => $request->email,
+                    'profession_id' => $request->profession_id,
+                    'city_id' => $request->city_id,
+                    'password' => Hash::make($request->password),
+                    'type' => 1,
+                    'status' => 1
+                ]);
+                $userResource =  new UsersRegisterResource($user);
+                if($userResource) {
+                    return $this->sentSuccessResponse($userResource, 'Register successfully!!', 200);
+                } else {
+                    return $this->sentFailureResponse(500, 'Something went wrong!!');
+                }
+            }
+        } 
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'username' => 'required| string',
@@ -87,7 +122,7 @@ class AuthController extends Controller
                 'profession_id' => $request->profession_id,
                 'city_id' => $request->city_id,
                 'password' => Hash::make($request->password),
-                'type' => $request->type,
+                'type' => 1,
                 'status' => 1
             ]);
             $userResource =  new UsersRegisterResource($user);
@@ -95,7 +130,7 @@ class AuthController extends Controller
                 return $this->sentSuccessResponse($userResource, 'Register successfully!!', 200);
             } else {
                 return $this->sentFailureResponse(500, 'Something went wrong!!');
-            }
+            }  
         }
     }
 

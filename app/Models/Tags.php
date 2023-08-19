@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\TagPrograms;
 
 class Tags extends Model
 {
@@ -19,4 +20,7 @@ class Tags extends Model
 
     ];
 
+    public function tagprograms() {
+        return $this->hasMany(Tagprograms::class, 'tag_id', 'id');
+    }
 }

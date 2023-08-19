@@ -211,13 +211,13 @@ class BannersController extends Controller
 *       @OA\JsonContent()
 *    ),
 *   @OA\Response(
-*       response = 404,
-*       description = "Data not found!!",
+*       response = 422,
+*       description = "Validated fail!!",
 *       @OA\JsonContent()
 *    ),
 *   @OA\Response(
-*       response = 422,
-*       description = "Validated fail!!",
+*       response = 404,
+*       description = "Data not found!!",
 *       @OA\JsonContent()
 *    ),
 *   @OA\Response(
@@ -241,7 +241,6 @@ class BannersController extends Controller
                     'errors' => $validator->messages()
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else { 
-                $banner = Banners::find($id);
                 $banner->update([
                     'title' => $request->title,
                     'description' => $request->description,
@@ -316,12 +315,9 @@ class BannersController extends Controller
 
         if($banner) {
             $banner->delete();
-            return response()->json([
-                'status_code' => '200',
-                'message' => 'Delete successfully!!'
-            ], Response::HTTP_OK);
+            return $this->sentSuccessResponse("", 'Deleted successfully!!', 200);
         } else {
-           return $this->sentFailureResponse(404, 'Data not found!!');
+            return $this->sentFailureResponse(404, 'Data not found!!');
         }
     }
 }

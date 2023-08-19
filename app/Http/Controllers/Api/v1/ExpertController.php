@@ -42,47 +42,33 @@ class ExpertController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    // public function store(Request $request)
-    // {
-    //     $validator = Validator::make($request->all(), [
-    //         'name' => 'required', 
-    //         'description' => 'required', 
-    //         'position' => 'required', 
-    //     ]);
-        
-    //     if($validator->fails()) {
-    //         return response()->json([
-    //             'status_code' => 422,
-    //             'errors' => $validator->messages()
-    //         ], Response::HTTP_UNPROCESSABLE_ENTITY);
-    //     } else {
-    //         $expert = Expert::create([
-    //             'name' => $request->name,
-    //             'description' => $request->description, 
-    //             'position' => $request->position,
-    //             'status' => $request->status == true ? '1' : '0',
-    //             'type' => $request->type
-    //         ]);
-    //         $expertresource =  new ExpertResource($expert);
-
-    //         if($expertresource) {
-    //             return $this->sentSuccessResponse($expertresource);
-    //         } else {
-    //             // return response()->json([
-    //             //     'message' => 'Something went wrong!',
-    //             //     'status_code' => 500
-    //             // ], Response:: HTTP_INTERNAL_SERVER_ERROR);
-    //             return $this->sentFailureResponse(500, 'Something went wrong!!');
-    //         }
-    //     }
-    // }
-
-    /**
-     * Display the specified resource.
-     */
+/**
+* @OA\Get(
+*   path="/api/v1/expert/{id}",
+*   summary="Get expert by id",
+*   description="Get expert by id",
+*   tags={"Experts"},
+*   @OA\Parameter(
+*         name="id",
+*         in="path",
+*         required=true,
+*         description="Id of the expert",
+*         @OA\Schema(
+*             type="integer"
+*         )
+*   ),
+*   @OA\Response(
+*       response = 200,
+*       description = "Get Successfully!!",
+*       @OA\JsonContent()
+*    ),
+*   @OA\Response(
+*       response = 404,
+*       description = "Data not found!!",
+*       @OA\JsonContent()
+*    ),
+*)
+*/
     public function show($id)
     {
         $expert = Expert::where('status', '1')->where('type', '2')->find($id);
@@ -91,6 +77,89 @@ class ExpertController extends Controller
             return $this->sentSuccessResponse($expertresource, 'Get expert by id successfully!!', 200);
         } else {
             return $this->sentFailureResponse(404, 'Data not found!!');
+        }
+    }
+
+/**
+* @OA\Post(
+*   path="/api/v1/expert",
+*   tags={"Experts"},
+*   summary="Create a new expert",
+*   description="Create a new expert",
+* 
+*   @OA\RequestBody(      
+*       required=true,
+*       @OA\JsonContent(
+*           @OA\Schema(
+*               properties={
+*               @OA\Property(property="name", type="string"),
+*               @OA\Property(property="description", type="string"),
+*               @OA\Property(property="position", type="string"),
+*               @OA\Property(property="rate", type="string"),
+*               @OA\Property(property="price", type="string"),
+*               @OA\Property(property="customer", type="string"),
+*               @OA\Property(property="experience", type="string"),
+*               @OA\Property(property="profession_id", type="string"),
+*               },
+*           ),
+*       ),
+*   ),
+*
+*   @OA\Response(
+*       response = 201,
+*       description = "Created Successfully!!",
+*       @OA\JsonContent()
+*    ),
+*   @OA\Response(
+*       response = 422,
+*       description = "Validated fail!!",
+*       @OA\JsonContent()
+*    ),
+*   @OA\Response(
+*       response = 500,
+*       description = "Something went wrong!!",
+*       @OA\JsonContent()
+*    ),
+*)
+*/
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'description' => 'required',
+            'position' => 'required',
+            'price' => 'required',
+            'rate' => 'required',
+            'customer' => 'required',
+            'experience' => 'required',
+            'profession_id' => 'required'
+        ]);
+        
+        if($validator->fails()) {
+            return response()->json([
+                'status_code' => 422,
+                'errors' => $validator->messages()
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } else {
+            $expert = Expert::create([
+                'name' => $request->name,
+                'rate' => $request->rate,
+                'description' => $request->description,
+                'customer' => $request->customer,
+                'price' => $request->price,
+                'experience' => $request->experience,
+                'position' => $request->position,
+                'profession_id' => $request->profession_id,
+                'status' => 1,
+                'type' => 2,
+            ]);
+            $expertResource =  new ExpertResource($expert);
+
+            if($expertResource) {
+                return $this->sentSuccessResponse($expertResource, 'Created successfully!!', 201);
+            } else {
+                return $this->sentFailureResponse(500, 'Something went wrong!!');
+            }
         }
     }
 
@@ -155,7 +224,11 @@ class ExpertController extends Controller
                 'name' => 'required', 
                 'description' => 'required', 
                 'position' => 'required', 
-                'type' => 'required', 
+                'rate' => 'required',
+                'price' => 'required',
+                'customer' => 'required',
+                'experience' => 'required',
+                'profession_id' => 'required'
             ]);
             if($validator->fails()) {
                 return response()->json([
@@ -167,8 +240,13 @@ class ExpertController extends Controller
                     'name' => $request->name,
                     'description' => $request->description,
                     'position' => $request->position,
+                    'rate' => $request->rate,
+                    'price' => $request->price,
+                    'customer' => $request->customer,
+                    'experience' => $request->experience,
+                    'profession_id' => $request->profession_id,
                     'status' => 1,
-                    'type' => $request->type
+                    'type' => 2
                 ]);
                 $expertresource =  new ExpertResource($expert);
                 

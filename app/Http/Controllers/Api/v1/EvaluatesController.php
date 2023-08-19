@@ -71,7 +71,7 @@ class EvaluatesController extends Controller
 *    ),
 *   @OA\Response(
 *       response = 422,
-*       description = "Data not found!!",
+*       description = "Validated fail!!",
 *       @OA\JsonContent()
 *    ),
 *   @OA\Response(
@@ -108,10 +108,6 @@ class EvaluatesController extends Controller
             if($evaluatesResource) {
                 return $this->sentSuccessResponse($evaluatesResource, 'Created successfully!!', 201);
             } else {
-                // return response()->json([
-                //     'message' => 'Something went wrong!',
-                //     'status_code' => 500
-                // ], Response:: HTTP_INTERNAL_SERVER_ERROR);
                 return $this->sentFailureResponse(500, 'Something went wrong!!');
             }
         }

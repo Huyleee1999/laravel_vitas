@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Professions;
+use App\Models\Evaluates;
+use App\Models\Bookings;
 
 class Expert extends Model
 {
@@ -25,6 +28,9 @@ class Expert extends Model
         'status',
         'description',
         'position',
+        'rate',
+        'price',
+        'customer',
         'created_at',
         'updated_at',
     ];
@@ -35,5 +41,9 @@ class Expert extends Model
 
     public function evaluates() {
         return $this->hasMany(Evaluates::class, 'expert_id', 'id');
+    }
+
+    public function bookings() {
+        return $this->hasMany(Bookings::class, 'expert_id', 'id');
     }
 }

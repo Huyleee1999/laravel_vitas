@@ -158,6 +158,11 @@ class ProfessionController extends Controller
 *       @OA\JsonContent()
 *    ),
 *   @OA\Response(
+*       response = 422,
+*       description = "Validated fail!!",
+*       @OA\JsonContent()
+*    ),
+*   @OA\Response(
 *       response = 500,
 *       description = "Something went wrong!!",
 *       @OA\JsonContent()
@@ -224,12 +229,9 @@ class ProfessionController extends Controller
 
         if($professions) {
             $professions->delete();
-            return response()->json([
-                'status_code' => '200',
-                'message' => 'Delete successfully!!'
-            ], Response::HTTP_OK);
+            return $this->sentSuccessResponse("", 'Deleted successfully!!', 200);
         } else {
-           return $this->sentFailureResponse(404, 'Data not found!!');
+            return $this->sentFailureResponse(404, 'Data not found!!');
         }
     }
 }

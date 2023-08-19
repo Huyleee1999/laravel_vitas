@@ -297,16 +297,16 @@
                             }
                         }
                     },
-                    "404": {
-                        "description": "Data not found!!",
+                    "422": {
+                        "description": "Validated fail!!",
                         "content": {
                             "application/json": {
                                 "schema": {}
                             }
                         }
                     },
-                    "422": {
-                        "description": "Validated fail!!",
+                    "404": {
+                        "description": "Data not found!!",
                         "content": {
                             "application/json": {
                                 "schema": {}
@@ -352,6 +352,76 @@
                     },
                     "404": {
                         "description": "Data not found!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/bookings": {
+            "get": {
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Get all bookings",
+                "description": "Get all bookings",
+                "operationId": "4b6323b45b01fd18933b9480fafef1e7",
+                "responses": {
+                    "200": {
+                        "description": "Get Successfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data not found!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Create a new booking",
+                "description": "Create a new booking",
+                "operationId": "b8d9d18a7b29e7008123a0813237d5b4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created Successfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validated fail!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Something went wrong!!",
                         "content": {
                             "application/json": {
                                 "schema": {}
@@ -441,7 +511,7 @@
                         }
                     },
                     "422": {
-                        "description": "Data not found!!",
+                        "description": "Validated fail!!",
                         "content": {
                             "application/json": {
                                 "schema": {}
@@ -524,9 +594,88 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Experts"
+                ],
+                "summary": "Create a new expert",
+                "description": "Create a new expert",
+                "operationId": "53ce1aee992a02ef09a193545953c5d1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created Successfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validated fail!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Something went wrong!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/expert/{id}": {
+            "get": {
+                "tags": [
+                    "Experts"
+                ],
+                "summary": "Get expert by id",
+                "description": "Get expert by id",
+                "operationId": "847cc7299b53dbb135af1bb8c97f166b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the expert",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get Successfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data not found!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
             "put": {
                 "tags": [
                     "Experts"
@@ -609,6 +758,73 @@
                 "responses": {
                     "200": {
                         "description": "Delete Successfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data not found!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/expert-detail": {
+            "get": {
+                "tags": [
+                    "Expert detail"
+                ],
+                "summary": "Get all expert detail",
+                "description": "Get all expert detail",
+                "operationId": "3073e6c6e91488fe05bdd16443dafecf",
+                "responses": {
+                    "200": {
+                        "description": "Get Successfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data not found!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/expert-detail/{id}": {
+            "get": {
+                "tags": [
+                    "Expert detail"
+                ],
+                "summary": "Get detail of expert by id",
+                "description": "Get detail of expert by id",
+                "operationId": "9de84c578fd47310af938d9846e3587a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the expert detail",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get Successfully!!",
                         "content": {
                             "application/json": {
                                 "schema": {}
@@ -910,6 +1126,14 @@
                             }
                         }
                     },
+                    "422": {
+                        "description": "Validated fail!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Something went wrong!!",
                         "content": {
@@ -1065,6 +1289,213 @@
                         }
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "Questions"
+                ],
+                "summary": "Delete question by id",
+                "description": "Delete question by id",
+                "operationId": "90b597403c9fd31dd0e3efd37038c5e2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the question",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete Successfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data not found!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tagprograms": {
+            "get": {
+                "tags": [
+                    "TagPrograms"
+                ],
+                "summary": "Get all tagprograms",
+                "description": "Get all tagprograms",
+                "operationId": "9b370eef37a1603a3584c79e1bda206e",
+                "responses": {
+                    "200": {
+                        "description": "Get Successfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data not found!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "TagPrograms"
+                ],
+                "summary": "Create a new tagprogram",
+                "description": "Create a new tagprogram",
+                "operationId": "eccb2c80bd9112e27ad02fbb408cfef3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created Successfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validated fails!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Something went wrong!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tagprograms/{id}": {
+            "put": {
+                "tags": [
+                    "TagPrograms"
+                ],
+                "summary": "Update a new tagprogram",
+                "description": "Update a new tagprogram",
+                "operationId": "daab7fa6af997c7019536ff83cb5b0ed",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id of the tagprogram",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated Successfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validated fail!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data not found!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Something went wrong!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "TagPrograms"
+                ],
+                "summary": "Delete tagprogram by id",
+                "description": "Delete tagprogram by id",
+                "operationId": "45e2f8593f7914a83b019c7c0dc7cc6a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the tagprogram",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete Successfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data not found!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/tags": {
@@ -1167,6 +1598,67 @@
                     },
                     "404": {
                         "description": "Data not found!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "Update a new tag",
+                "description": "Update a new tag",
+                "operationId": "6720dd4aef355540c296c7d0e12608a0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id of the tag",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated Successfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data not found!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validated fail!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Something went wrong!!",
                         "content": {
                             "application/json": {
                                 "schema": {}

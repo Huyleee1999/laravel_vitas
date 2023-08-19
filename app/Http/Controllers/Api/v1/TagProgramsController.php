@@ -3,22 +3,22 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\v1\TagsCollection;
-use App\Http\Resources\v1\TagsResource;
-use App\Models\Tags;
+use App\Http\Resources\v1\TagProgramsCollection;
+use App\Http\Resources\v1\TagProgramsResource;
+use App\Models\TagPrograms;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Response;
 
-class TagsController extends Controller
+class TagProgramsController extends Controller
 {
 
 /**
 * @OA\Get(
-*   path="/api/v1/tags",
-*   summary="Get all tags",
-*   description="Get all tags",
-*   tags={"Tags"},
+*   path="/api/v1/tagprograms",
+*   summary="Get all tagprograms",
+*   description="Get all tagprograms",
+*   tags={"TagPrograms"},
 *   
 *   @OA\Response(
 *       response = 200,
@@ -34,10 +34,10 @@ class TagsController extends Controller
 */
     public function index()
     {
-        $tagsCollection = new TagsCollection(Tags::where('status', '1')->get());
+        $tagprogramsCollection = new TagProgramsCollection(TagPrograms::all());
         
-        if($tagsCollection->count() > 0) {
-            return $this->sentSuccessResponse($tagsCollection, 'Get all tags successfully!!', 200);
+        if($tagprogramsCollection->count() > 0) {
+            return $this->sentSuccessResponse($tagprogramsCollection, 'Get all tags successfully!!', 200);
         } else {
             return $this->sentFailureResponse4(404, 'Data not found!!');
         }
@@ -46,17 +46,18 @@ class TagsController extends Controller
 
 /**
 * @OA\Post(
-*   path="/api/v1/tags",
-*   tags={"Tags"},
-*   summary="Create a new tag",
-*   description="Create a new tag",
+*   path="/api/v1/tagprograms",
+*   tags={"TagPrograms"},
+*   summary="Create a new tagprogram",
+*   description="Create a new tagprogram",
 * 
 *   @OA\RequestBody(      
 *       required=true,
 *       @OA\JsonContent(
 *           @OA\Schema(
 *               properties={
-*               @OA\Property(property="name", type="string"),
+*               @OA\Property(property="tag_id", type="integer"),
+*               @OA\Property(property="program_id", type="integer"),
 *               },
 *           ),
 *       ),
@@ -69,7 +70,7 @@ class TagsController extends Controller
 *    ),
 *   @OA\Response(
 *       response = 422,
-*       description = "Validated fail!!",
+*       description = "Validated fails!!",
 *       @OA\JsonContent()
 *    ),
 *   @OA\Response(
@@ -82,7 +83,8 @@ class TagsController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'tag_id' => 'required',
+            'program_id' => 'required',
         ]);
         if($validator->fails()) {
             return response()->json([
@@ -90,14 +92,14 @@ class TagsController extends Controller
                 'errors' => $validator->messages()
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         } else {
-            $tags = Tags::create([
-                'name' => $request->name,
-                'status' => 1
+            $tagprograms = TagPrograms::create([
+                'tag_id' => $request->tag_id,
+                'program_id' => $request->program_id,
             ]);
-            $tagsResource = new TagsResource($tags);
+            $tagprogramsresource =  new TagProgramsResource($tagprograms);
 
-            if($tagsResource) {
-                return $this->sentSuccessResponse($tagsResource, 'Created successfully!!', 201);
+            if($tagprogramsresource) {
+                return $this->sentSuccessResponse($tagprogramsresource, 'Created successfully!!', 201);
             } else {
                 return $this->sentFailureResponse(500, 'Something went wrong!!');
             }
@@ -105,55 +107,17 @@ class TagsController extends Controller
     }
 
 /**
-* @OA\Get(
-*   path="/api/v1/tags/{id}",
-*   summary="Get tag by id",
-*   description="Get tag by id",
-*   tags={"Tags"},
-*   @OA\Parameter(
-*         name="id",
-*         in="path",
-*         required=true,
-*         description="Id of the tag",
-*         @OA\Schema(
-*             type="integer"
-*         )
-*   ),
-*   @OA\Response(
-*       response = 200,
-*       description = "Get Successfully!!",
-*       @OA\JsonContent()
-*    ),
-*   @OA\Response(
-*       response = 404,
-*       description = "Data not found!!",
-*       @OA\JsonContent()
-*    ),
-*)
-*/
-    public function show(string $id)
-    {
-        $tags = Tags::where('status', '1')->find($id);
-        if($tags) {
-            $tagsResource = new TagsResource($tags);
-            return $this->sentSuccessResponse($tagsResource, 'Get question by id successfully!!', 200);
-        } else {
-            return $this->sentFailureResponse(404, 'Data not found!!');
-        }
-    }
-
-/**
 * @OA\Put(
-*   path="/api/v1/tags/{id}",
-*   tags={"Tags"},
-*   summary="Update a new tag",
-*   description="Update a new tag",
+*   path="/api/v1/tagprograms/{id}",
+*   tags={"TagPrograms"},
+*   summary="Update a new tagprogram",
+*   description="Update a new tagprogram",
 *   
 *   @OA\Parameter(
 *         name="id",
 *         in="path",
 *         required=true,
-*         description="id of the tag",
+*         description="id of the tagprogram",
 *         @OA\Schema(
 *             type="integer"
 *         ),
@@ -163,7 +127,8 @@ class TagsController extends Controller
 *       @OA\JsonContent(
 *           @OA\Schema(
 *               properties={
-*               @OA\Property(property="name", type="string"),
+*               @OA\Property(property="tag_id", type="integer"),
+*               @OA\Property(property="program_id", type="integer"),
 *               },
 *           ),
 *       ),
@@ -175,13 +140,13 @@ class TagsController extends Controller
 *       @OA\JsonContent()
 *    ),
 *   @OA\Response(
-*       response = 404,
-*       description = "Data not found!!",
+*       response = 422,
+*       description = "Validated fail!!",
 *       @OA\JsonContent()
 *    ),
 *   @OA\Response(
-*       response = 422,
-*       description = "Validated fail!!",
+*       response = 404,
+*       description = "Data not found!!",
 *       @OA\JsonContent()
 *    ),
 *   @OA\Response(
@@ -193,10 +158,11 @@ class TagsController extends Controller
 */
     public function update(Request $request, string $id)
     {
-        $tags = Tags::find($id);
-        if($tags) {
+        $tagprograms = TagPrograms::find($id);
+        if($tagprograms) {
             $validator = Validator::make($request->all(), [
-                'name' => 'required', 
+                'tag_id' => 'required', 
+                'program_id' => 'required', 
             ]);
             if($validator->fails()) {
                 return response()->json([
@@ -204,30 +170,30 @@ class TagsController extends Controller
                     'errors' => $validator->messages()
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
-                $tags->update([
-                    'name' => $request->name,
-                    'status' => 1
+                $tagprograms->update([
+                    'tag_id' => $request->tag_id,
+                    'program_id' => $request->program_id,                   
                 ]);
-                $tagsresource =  new TagsResource($tags);
+                $tagprogramsResource =  new TagProgramsResource($tagprograms);
                 
-                return $this->sentSuccessResponse($tagsresource, 'Updated successfully!!', 200);
+                return $this->sentSuccessResponse($tagprogramsResource, 'Updated successfully!!', 200);
             }
         } else {
             return $this->sentFailureResponse(500, 'Something went wrong!!');
         }
     }
 
- /**
+/**
 * @OA\Delete(
-*   path="/api/v1/tags/{id}",
-*   summary="Delete tag by id",
-*   description="Delete tag by id",
-*   tags={"Tags"},
+*   path="/api/v1/tagprograms/{id}",
+*   summary="Delete tagprogram by id",
+*   description="Delete tagprogram by id",
+*   tags={"TagPrograms"},
 *   @OA\Parameter(
 *         name="id",
 *         in="path",
 *         required=true,
-*         description="Id of the tag",
+*         description="Id of the tagprogram",
 *         @OA\Schema(
 *             type="integer"
 *         )
@@ -244,12 +210,12 @@ class TagsController extends Controller
 *    ),
 *)
 */
-    public function destroy($id)
+    public function destroy(string $id)
     {
-        $tags = Tags::find($id);
+        $tagprograms = TagPrograms::find($id);
 
-        if($tags) {
-            $tags->delete();
+        if($tagprograms) {
+            $tagprograms->delete();
             return $this->sentSuccessResponse("", 'Deleted successfully!!', 200);
         } else {
             return $this->sentFailureResponse(404, 'Data not found!!');
