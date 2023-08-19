@@ -104,9 +104,7 @@ class AuthController extends Controller
             'username' => 'required| string',
             'phone' => 'required| numeric | digits:10',
             'profession_id' =>  'required',
-            'city_id' =>  'required',
-            'email' =>  'required | email | unique:users',
-            'password' =>  'required | min:8',
+            'city_id' =>  'required'
         ]);
         if($validator->fails()) {
             return response()->json([
