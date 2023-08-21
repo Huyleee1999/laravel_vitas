@@ -104,7 +104,11 @@ class AuthController extends Controller
             'username' => 'required| string',
             'phone' => 'required| numeric | digits:10',
             'profession_id' =>  'required',
-            'city_id' =>  'required'
+            'company' =>  'required',
+            'experience' =>  'required',
+            'email' =>  'required | email | unique:users',
+            'password' =>  'required | min:8',
+            'project' =>  'required',
         ]);
         if($validator->fails()) {
             return response()->json([
@@ -116,11 +120,13 @@ class AuthController extends Controller
                 'name' => $request->name,
                 'username' => $request->username,
                 'phone' => $request->phone,
-                'email' => $request->email,
                 'profession_id' => $request->profession_id,
-                'city_id' => $request->city_id,
+                'company' => $request->company,
+                'experience' => $request->experience,
+                'email' => $request->email,
+                'project' => $request->project,
                 'password' => Hash::make($request->password),
-                'type' => 1,
+                'type' => 2,
                 'status' => 1
             ]);
             $userResource =  new UsersRegisterResource($user);
