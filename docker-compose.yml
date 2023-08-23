@@ -1,0 +1,53 @@
+version: '3.3'
+
+services: 
+    nginx:
+      image: nginx:1.17.4-alpine
+      ports:
+        - 8888:80 
+      depends_on:
+        - php
+        - db
+      volumes:
+        - .:/application
+        - ./docker/config/default.conf:/etc/nginx/conf.d/default.conf
+    
+    php:
+      build: ./docker
+      volumes:
+        - .:/application
+        - ./docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+      depends_on:
+        - db
+        - redis
+      environment:
+        - DB_PORT=3306
+        - DB_HOST=db
+        - DB_USERNAME=root
+        - DB_PASS=secret
+        - DB_NAME=app_db
+    
+    db:
+      image: mariadb:10.5.8
+      ports:
+        - "3306:3306"
+      volumes:
+        - db_data:/var/lib/mysql
+      environment:
+        - MYSQL_DATABASE=app_db
+        - MYSQL_ROOT_PASSWORD=1234
+        - MYSQL_PASSWORD=1234
+    
+    redis:
+      image: redis:5.0.6-alpine
+      ports:
+        - "6382:6379"
+
+volumes:
+  db_data:
+
+
+
+
+
+

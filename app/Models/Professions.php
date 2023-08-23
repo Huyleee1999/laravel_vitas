@@ -42,4 +42,8 @@ class Professions extends Model
     public function experts() {
         return $this-> hasMany(Expert::class, 'profession_id', 'id');
     }
+
+    public function blogs() {
+        return $this-> hasMany(Blogs::class, 'profession_id', 'id');
+    }
 }

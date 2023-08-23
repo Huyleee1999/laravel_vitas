@@ -93,7 +93,7 @@ class AuthController extends Controller
                 ]);
                 $userResource =  new UsersRegisterResource($user);
                 if($userResource) {
-                    return $this->sentSuccessResponse($userResource, 'Register successfully!!', 200);
+                    return $this->sentSuccessResponse($userResource, 'Register successfully!!', 201);
                 } else {
                     return $this->sentFailureResponse(500, 'Something went wrong!!');
                 }

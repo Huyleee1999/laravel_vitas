@@ -46,4 +46,8 @@ class Expert extends Model
     public function bookings() {
         return $this->hasMany(Bookings::class, 'expert_id', 'id');
     }
+
+    public function blogs() {
+        return $this-> hasMany(Blogs::class, 'expert_id', 'id');
+    }
 }

@@ -37,9 +37,9 @@ class BookingsController extends Controller
         $bookingscollection = new BookingsCollection(Bookings::where('status', '1')->get());
         
         if($bookingscollection->count() > 0) {
-            return $this->sentSuccessResponse($bookingscollection, 'Get all programs successfully!!', 201);
+            return $this->sentSuccessResponse($bookingscollection, 'Get all programs successfully!!', 200);
         } else {
-            return $this->sentFailureResponse4(404, 'Data not found!!');
+            return $this->sentFailureResponse(404, 'Data not found!!');
         }
     }
 

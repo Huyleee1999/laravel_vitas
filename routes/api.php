@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\v1\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\BannersController;
+use App\Http\Controllers\Api\v1\BlogsController;
 use App\Http\Controllers\Api\v1\BookingsController;
 use App\Http\Controllers\Api\v1\CityController;
 use App\Http\Controllers\Api\v1\EvaluatesController;
@@ -65,6 +66,8 @@ Route::prefix('v1')->middleware('api')->group(function () {
     Route::resource('expert-detail', ExpertDetailController::class)->only('index', 'show', 'update', 'destroy');
 
     Route::resource('bookings', BookingsController::class)->only('index', 'show', 'update', 'destroy', 'store');
+
+    Route::resource('blogs', BlogsController::class)->only('index', 'show', 'update', 'destroy', 'store');
 
 });
 
