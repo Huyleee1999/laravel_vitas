@@ -28,6 +28,9 @@ class User extends Authenticatable implements JWTSubject
         'city_id',
         'email',
         'password',
+        'company',
+        'experience',
+        'project',
         'type',
         'status',
         'created_at',
@@ -62,5 +65,13 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function city() {
+        return $this->belongsTo(City::class, 'city_id', 'id');
+    }
+
+    public function professions() {
+        return $this->belongsTo(Professions::class, 'profession_id', 'id');
     }
 }

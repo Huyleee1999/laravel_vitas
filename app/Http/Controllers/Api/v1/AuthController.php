@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\v1\ExpertRegisterResource;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Validator;
@@ -18,15 +19,15 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth/v1:api', ['except' => ['login', 'register', 'profile', 'logout']]);
+        $this->middleware('auth/v1:api', ['except' => ['login', 'userRegister', 'profile', 'logout', 'expertRegister']]);
     }
 
 /**
 * @OA\Post(
-*   path="/api/auth/v1/register",
+*   path="/api/auth/v1/user-register",
 *   tags={"Authentication"},
-*   summary="Create a new user/expert",
-*   description="Create a new user/expert",
+*   summary="Create a new user",
+*   description="Create a new user",
 * 
 *   @OA\RequestBody(      
 *       required=true,
@@ -40,7 +41,6 @@ class AuthController extends Controller
 *               @OA\Property(property="email", type="string"),
 *               @OA\Property(property="city_id", type="string"),
 *               @OA\Property(property="password", type="string"),
-*               @OA\Property(property="type", type="string"),
 *               },
 *           ),
 *       ),
@@ -63,42 +63,87 @@ class AuthController extends Controller
 *    ),
 *)
 */
-    public function register(Request $request) {
-        if($request->type == 1) {
-            $validator = Validator::make($request->all(), [
-                'name' => 'required',
-                'username' => 'required| string',
-                'phone' => 'required| numeric | digits:10',
-                'profession_id' =>  'required',
-                'city_id' =>  'required',
-                'email' =>  'required | email | unique:users',
-                'password' =>  'required | min:8',
+    public function userRegister(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'username' => 'required | string',
+            'phone' => 'required | numeric | digits:10',
+            'profession_id' =>  'required',
+            'city_id' =>  'required',
+            'email' =>  'required | email | unique:users',
+            'password' =>  'required | min:8',
+        ]);
+        if($validator->fails()) {
+            return response()->json([
+                'status_code' => 422,
+                'errors' => $validator->messages()
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } else {
+            $user = User::create([
+                'name' => $request->name,
+                'username' => $request->username,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'profession_id' => $request->profession_id,
+                'city_id' => $request->city_id,
+                'password' => Hash::make($request->password),
+                'type' => 1,
+                'status' => 1
             ]);
-            if($validator->fails()) {
-                return response()->json([
-                    'status_code' => 422,
-                    'errors' => $validator->messages()
-                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            $userResource =  new UsersRegisterResource($user);
+            if($userResource) {
+                return $this->sentSuccessResponse($userResource, 'User register successfully!!', 201);
             } else {
-                $user = User::create([
-                    'name' => $request->name,
-                    'username' => $request->username,
-                    'phone' => $request->phone,
-                    'email' => $request->email,
-                    'profession_id' => $request->profession_id,
-                    'city_id' => $request->city_id,
-                    'password' => Hash::make($request->password),
-                    'type' => 1,
-                    'status' => 1
-                ]);
-                $userResource =  new UsersRegisterResource($user);
-                if($userResource) {
-                    return $this->sentSuccessResponse($userResource, 'Register successfully!!', 201);
-                } else {
-                    return $this->sentFailureResponse(500, 'Something went wrong!!');
-                }
+                return $this->sentFailureResponse(500, 'Something went wrong!!');
             }
-        } 
+        }
+    }
+
+
+/**
+* @OA\Post(
+*   path="/api/auth/v1/expert-register",
+*   tags={"Authentication"},
+*   summary="Create a new expert",
+*   description="Create a new expert",
+* 
+*   @OA\RequestBody(      
+*       required=true,
+*       @OA\JsonContent(
+*           @OA\Schema(
+*               properties={
+*               @OA\Property(property="name", type="string"),
+*               @OA\Property(property="username", type="string"),
+*               @OA\Property(property="phone", type="string"),
+*               @OA\Property(property="profession_id", type="string"),
+*               @OA\Property(property="company", type="string"),
+*               @OA\Property(property="experience", type="string"),
+*               @OA\Property(property="email", type="string"),
+*               @OA\Property(property="password", type="string"),
+*               @OA\Property(property="project", type="string"),
+*               },
+*           ),
+*       ),
+*   ),
+*
+*   @OA\Response(
+*       response = 201,
+*       description = "Created Successfully!!",
+*       @OA\JsonContent()
+*    ),
+*   @OA\Response(
+*       response = 422,
+*       description = "Validated fail!!",
+*       @OA\JsonContent()
+*    ),
+*   @OA\Response(
+*       response = 500,
+*       description = "Something went wrong!!",
+*       @OA\JsonContent()
+*    ),
+*)
+*/
+    public function expertRegister(Request $request) {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'username' => 'required| string',
@@ -116,7 +161,7 @@ class AuthController extends Controller
                 'errors' => $validator->messages()
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         } else {
-            $user = User::create([
+            $expert = User::create([
                 'name' => $request->name,
                 'username' => $request->username,
                 'phone' => $request->phone,
@@ -129,12 +174,12 @@ class AuthController extends Controller
                 'type' => 2,
                 'status' => 1
             ]);
-            $userResource =  new UsersRegisterResource($user);
-            if($userResource) {
-                return $this->sentSuccessResponse($userResource, 'Register successfully!!', 200);
+            $expertResource =  new ExpertRegisterResource($expert);
+            if($expertResource) {
+                return $this->sentSuccessResponse($expertResource, 'Expert register successfully!!', 201);
             } else {
                 return $this->sentFailureResponse(500, 'Something went wrong!!');
-            }  
+            }
         }
     }
 
@@ -254,8 +299,19 @@ class AuthController extends Controller
 * @OA\Post(
 *   path="/api/auth/v1/logout",
 *   tags={"Authentication"},
-*   summary="Logged out user/expert",
-*   description="Logged out user/expert",
+*   summary="Logged out",
+*   description="Logged out",
+*
+*   @OA\RequestBody(      
+*       required=true,
+*       @OA\JsonContent(
+*           @OA\Schema(
+*               properties={                 
+*               @OA\Property(property="token", type="string"),
+*               },
+*           ),
+*       ),
+*   ),
 *
 *   @OA\Response(
 *       response = 201,

@@ -5,14 +5,58 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/auth/v1/register": {
+        "/api/auth/v1/user-register": {
             "post": {
                 "tags": [
                     "Authentication"
                 ],
-                "summary": "Create a new user/expert",
-                "description": "Create a new user/expert",
-                "operationId": "b9fe9e65ebf2825221d48b9bc657807a",
+                "summary": "Create a new user",
+                "description": "Create a new user",
+                "operationId": "dc1a2ef6752a411c2e0c15550e895d68",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created Successfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validated fail!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Something went wrong!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/v1/expert-register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Create a new expert",
+                "description": "Create a new expert",
+                "operationId": "42c307c17a05f8fa14c6697fbef2d619",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -131,9 +175,17 @@
                 "tags": [
                     "Authentication"
                 ],
-                "summary": "Logged out user/expert",
-                "description": "Logged out user/expert",
+                "summary": "Logged out",
+                "description": "Logged out",
                 "operationId": "816c53f7ef8557d5acd3cd0dd3df0cc3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
                 "responses": {
                     "201": {
                         "description": "Logged out Successfully!!",

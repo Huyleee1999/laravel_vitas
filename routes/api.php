@@ -72,7 +72,8 @@ Route::prefix('v1')->middleware('api')->group(function () {
 });
 
 Route::group(['middleware' => 'api', 'prefix' => 'auth/v1'], function($router) {
-    Route::post('register', [ AuthController::class, 'register']);
+    Route::post('user-register', [ AuthController::class, 'userRegister']);
+    Route::post('expert-register', [ AuthController::class, 'expertRegister']);
     Route::post('login', [ AuthController::class, 'login']);
     Route::get('profile', [ AuthController::class, 'profile']);
     Route::post('logout', [ AuthController::class, 'logout']);

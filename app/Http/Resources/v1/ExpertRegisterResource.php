@@ -20,7 +20,7 @@ class ExpertRegisterResource extends JsonResource
             'name' => $this->name,
             'username' => $this->username,
             'phone' =>$this->phone,
-            'profession_id'=> $this->profession_id,
+            'profession_id'=> $this->professions->name,
             'company'=> $this->company,
             'experience'=> $this->experience,
             'email' => $this->email,
